@@ -3,6 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopAPI", "ShopAPI\ShopAPI.csproj", "{4DCB438B-8DF0-432C-ABBD-F8FC1C16304C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopLibrary", "ShopLibrary\ShopLibrary.csproj", "{3AA4CBF7-302A-4D23-B5C6-941F10AE4FBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopTest", "ShopTest\ShopTest.csproj", "{55F1CBDD-BB1B-4687-8AEB-CC1C2808A154}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +16,19 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4DCB438B-8DF0-432C-ABBD-F8FC1C16304C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DCB438B-8DF0-432C-ABBD-F8FC1C16304C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DCB438B-8DF0-432C-ABBD-F8FC1C16304C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DCB438B-8DF0-432C-ABBD-F8FC1C16304C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AA4CBF7-302A-4D23-B5C6-941F10AE4FBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AA4CBF7-302A-4D23-B5C6-941F10AE4FBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AA4CBF7-302A-4D23-B5C6-941F10AE4FBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AA4CBF7-302A-4D23-B5C6-941F10AE4FBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55F1CBDD-BB1B-4687-8AEB-CC1C2808A154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55F1CBDD-BB1B-4687-8AEB-CC1C2808A154}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55F1CBDD-BB1B-4687-8AEB-CC1C2808A154}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55F1CBDD-BB1B-4687-8AEB-CC1C2808A154}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
