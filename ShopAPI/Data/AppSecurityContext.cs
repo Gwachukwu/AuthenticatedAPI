@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace IdentityAPI.Data;
+namespace ShopAPI.Data;
 
 public class AppSecurityContext : IdentityDbContext
 {

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShopAPI.Models;
 
-namespace IdentityAPI.Data;
+namespace ShopAPI.Data;
 
 public class AppDataContext : DbContext
 {
