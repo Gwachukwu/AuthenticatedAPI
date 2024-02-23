@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityAPI.Controllers;
 
-// [Authorize]
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ShoppingCartController : ControllerBase
