@@ -1,9 +1,7 @@
 using ShopAPI.Data;
 using ShopAPI.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityAPI.Controllers;
@@ -28,7 +26,7 @@ public class ShoppingCartController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Product>> Get()
+    public async Task<ActionResult<IEnumerable<Product>>> Get()
     {
         var userEmail = User.Identity?.Name ?? String.Empty;
 
@@ -36,21 +34,37 @@ public class ShoppingCartController : ControllerBase
             .Include(c => c.Products)
             .FirstOrDefaultAsync(c => c.User == userEmail);
 
+        if (cart == null)
+        {
+            return NotFound();
+        }
+
         return cart.Products;
     }
 
     [HttpPost("remove/{id}")]
-    public async Task<string> RemoveShoppingCart(int id)
+    public async Task<string> RemoveFromShoppingCart(int id)
     {
-        var shoppingCart = await _dbData.ShoppingCarts.FindAsync(id);
+        var userEmail = User.Identity?.Name ?? String.Empty;
+
+        var shoppingCart = await _dbData.ShoppingCarts
+            .Include(c => c.Products)
+            .FirstOrDefaultAsync(c => c.User == userEmail);
+
         if (shoppingCart == null)
         {
-            return "Not found";
+            return "Shopping cart not found";
         }
 
-        _dbData.ShoppingCarts.Remove(shoppingCart);
+        var product = shoppingCart.Products.FirstOrDefault(c => c.Id == id);
+        if (product == null)
+        {
+            return "Product not found in cart";
+        }
+
+        shoppingCart.Products.Remove(product);
         await _dbData.SaveChangesAsync();
-        return "Shopping cart removed";
+        return "Product removed";
     }
 
     [HttpPost("{productId}")]
@@ -78,54 +92,4 @@ public class ShoppingCartController : ControllerBase
 
         return Ok("Product added to cart.");
     }
-
-    // [HttpGet(Name = "GetTestString")]
-    // public async Task<string> Get(string id)
-    // {
-
-    //     // var user = await _uMan.FindByNameAsync(User.Identity?.Name ?? String.Empty);
-    //     // return user?.Email ?? String.Empty;
-    //     // return $"{User.Identity?.Name ?? String.Empty} = {user?.Email ?? String.Empty}";
-    //     var rNum = Random.Shared.Next();
-    //     _dbData.Add<Testmodel>(new Testmodel() {  Name = User.Identity?.Name ?? String.Empty, TestmodelId = rNum});
-    //     await _dbData.SaveChangesAsync();
-    //     return rNum.ToString();
-    //     // task.Wait();
-    //     // var user = task.Result;
-
-    // }
-
-    // [AllowAnonymous]
-    // [HttpPost(Name = "GetWeatherForecast")]
-    // public IEnumerable<string> Post()
-    // {
-    //     // var ty = this.GetType();
-    //     // var ca = ty.GetCustomAttributesData();
-    //     // var ret = ca.Select(c => c.AttributeType.Name);
-
-    //     var ty = this.GetType();
-    //     var met = ty.GetMethods();
-    //     var mList = met.SelectMany(m => m.GetCustomAttributesData());
-    //     var ret = mList.Select(m => m.AttributeType.Name).Where(m => m.StartsWith("Http"));
-
-    //     return ret;
-    // }
-
-    // [AllowAnonymous]
-    // [HttpOptions(Name = "GetWeatherForecast")]
-    // public string Options()
-    // {
-    //     // var ty = this.GetType();
-    //     // var ca = ty.GetCustomAttributesData();
-    //     // var ret = ca.Select(c => c.AttributeType.Name);
-
-    //     var ty = this.GetType();
-    //     var met = ty.GetMethods();
-    //     var mList = met.SelectMany(m => m.GetCustomAttributesData());
-    //     var hdr = mList.Select(m => m.AttributeType.Name).Where(m => m.StartsWith("Http")).Select(m => m.Replace("Http", String.Empty).Replace("Attribute", String.Empty).ToUpper());
-
-    //     Response.Headers.Allow = String.Join(',', hdr.ToArray());
-
-    //     return String.Empty;
-    // }
 }

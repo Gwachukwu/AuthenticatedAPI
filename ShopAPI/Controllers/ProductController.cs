@@ -11,14 +11,14 @@ namespace IdentityAPI.Controllers;
 [Authorize]
 [ApiController]
 [Route("[controller]")]
-public class ProductController : ControllerBase
+public class ProductsController : ControllerBase
 {
 
-    private readonly ILogger<ProductController> _logger;
+    private readonly ILogger<ProductsController> _logger;
     private readonly AppSecurityContext _dbSec;
     private readonly AppDataContext _dbData;
 
-    public ProductController(ILogger<ProductController> logger
+    public ProductsController(ILogger<ProductsController> logger
         , AppSecurityContext dbSec
         , AppDataContext dbData)
     {
@@ -30,7 +30,9 @@ public class ProductController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<Product>> Get()
     {
-        var cart = await _dbData.Products.ToListAsync();
+        var cart = await _dbData.Products
+                          .Include(product => product.Category)
+                             .ToListAsync();
         return cart;
     }
 
@@ -40,6 +42,7 @@ public class ProductController : ControllerBase
     {
         var products = await _dbData.Products
             .Where(p => p.Category.Id == categoryId)
+            .Include(product => product.Category)
             .ToListAsync();
 
         if (products == null || !products.Any())
@@ -53,6 +56,16 @@ public class ProductController : ControllerBase
     [HttpPost]
     public async Task<string> AddProduct(Product product)
     {
+        var categoryId = product.Category.Id;
+
+        var category = await _dbData.Categories
+                         .FirstOrDefaultAsync(c => c.Id == categoryId);
+
+        if (category != null)
+        {
+            product.Category = category;
+        }
+
         _dbData.Products.Add(product);
         await _dbData.SaveChangesAsync();
         return "Product added successfully";
